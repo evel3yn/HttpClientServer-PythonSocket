@@ -64,11 +64,12 @@ def responseGetRequest(getRequestPath, direc):
 def responseHeadRequest(getRequestPath, direc):
     o = urlparse(getRequestPath)
     # if the file is existed in the directory
-    if os.path.exists(direc) and os.path.isfile(direc):
+    if os.path.exists(direc):
         # path without '/' and the blank in the end
-        subO = o.path[1:-1]
+        sub1 = o.path[1:-1]
+        subO = direc+'/'+sub1
         # if file is in the directory
-        if subO in direc:
+        if os.path.exists(subO):
             m = "HTTP/1.1 200 OK\n"
             # Date
             t = strftime("%a, %d %b %Y %H:%M:%S %Z", gmtime())
@@ -76,7 +77,7 @@ def responseHeadRequest(getRequestPath, direc):
             # Server
             m += "Server: " + "SiminWen" + "\n"
             # rewrite the D:/abc.txt to D:\\abc.txt (to absolute path)
-            absdir = os.path.abspath(direc)
+            absdir = os.path.abspath(subO)
             # able to read large file
             fd = ""
             with open(absdir, 'r') as f:
